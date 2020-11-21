@@ -7,8 +7,10 @@ import matplotlib.pyplot as plt
 import stadium
 import templates
 
+
 def print_info(name):
     print(f'Project: {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+
 
 def visualize(grid):
     plt.imshow(grid, interpolation='nearest')
