@@ -17,6 +17,4 @@ def create_stadium(template):
                         stadium[j][i] = 1
                     if template[element]['type'] == 'gate':
                         stadium[j][i] = 2
-                    if template[element]['type']=='inside':
-                        stadium[j][i] = 3
     return stadium
