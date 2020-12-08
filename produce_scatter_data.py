@@ -5,12 +5,11 @@
 import numpy as np
 import random
 import matplotlib.pyplot as plt
-import matplotlib.cm as cm
 import stadium
 import templates
+import csv
 
-
-probability = 0.03  # Agent spawn probability
+probabilities = [0.1, 0.3, 0.5, 0.7, 0.9]
 
 
 def print_info(name):
@@ -94,31 +93,33 @@ def move_agent(grid, agents, ag):  # moves one agent by one time step
         agents.pop(agents.index(ag))
         grid_saved[ag.x][ag.y] = 3
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_info('Stadium evacuation simulation.')
-    stadium_outline = templates.big_stadium()
-    stadium_big = stadium.create_stadium(stadium_outline)
-    stadium_big[0][0] = 8  # color reference point in visualization
-    agents = []
-    # agents = initiate_agents_test(stadium_big)
-    agents = initiate_agents_random(stadium_big, probability)
-    t = 0
-    t_list = []
-    a_list = []
-    starting_agents = len(agents)
-    while len(agents) > 0:
+with open('scatter_data.csv', mode='a') as scatter_file:
+    for p in probabilities:
+        class agent:
+          def __init__(self, tag, x, y):
+            self.tag = tag
+            self.x = x
+            self.y = y
+        stadium_big = 0
+        stadium_outline = templates.big_stadium()
+        stadium_big = stadium.create_stadium(stadium_outline)
+        stadium_big[0][0] = 8  # color reference point in visualization
+        agents = []
+        agents = initiate_agents_random(stadium_big, probability)
+        t = 0
+        t_list = []
+        a_list = []
+        starting_agents = len(agents)
+        while len(agents) > 0:
+            a_list.append(len(agents))
+            t_list.append(t)
+            print('Spawning probability: ', p, ', number of agents in stadium: ', len(agents), ' at time = ', t)
+            for agent in agents:
+                move_agent(stadium_big, agents, agent)
+            t += 1
+        print('Spawning probability: ', p, ', number of agents in stadium: ', len(agents), ' at time = ', t)
         a_list.append(len(agents))
         t_list.append(t)
-        print('Number of agents in stadium: ', len(agents), ' at time = ', t)
-        for agent in agents:
-            move_agent(stadium_big, agents, agent)
-        t += 1
-    print('Number of agents in stadium: ', len(agents), ' at time = ', t)
-    a_list.append(len(agents))
-    t_list.append(t)
-    plt.plot(t_list, a_list)
-    plt.xlabel('Time')
-    plt.ylabel('Agents in stadium')
-    plt.savefig('agents_{}_in_stadium_plot.png'.format(starting_agents))
+        data_writer = csv.writer(scatter_file, delimiter=',')
+        data_writer.writerow([starting_agents, t])
+print('Done.')
