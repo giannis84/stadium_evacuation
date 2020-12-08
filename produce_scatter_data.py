@@ -9,7 +9,7 @@ import stadium
 import templates
 import csv
 
-probabilities = [0.1, 0.3, 0.5, 0.7, 0.9]
+probabilities = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
 
 def print_info(name):
@@ -93,7 +93,8 @@ def move_agent(grid, agents, ag):  # moves one agent by one time step
         agents.pop(agents.index(ag))
         grid_saved[ag.x][ag.y] = 3
 
-with open('scatter_data.csv', mode='a') as scatter_file:
+
+with open('scatter_data.csv', mode='a', newline='') as scatter_file:
     for p in probabilities:
         class agent:
           def __init__(self, tag, x, y):
@@ -105,7 +106,7 @@ with open('scatter_data.csv', mode='a') as scatter_file:
         stadium_big = stadium.create_stadium(stadium_outline)
         stadium_big[0][0] = 8  # color reference point in visualization
         agents = []
-        agents = initiate_agents_random(stadium_big, probability)
+        agents = initiate_agents_random(stadium_big, p)
         t = 0
         t_list = []
         a_list = []
